@@ -1,0 +1,12 @@
+{
+  "appId": "br.com.helldiversbr.capacitor",
+  "appName": "HELLDIVERS-BR",
+  "webDir": "www",
+  "server": {
+    "url": "https://helldivers-br.pages.dev",
+    "cleartext": false,
+    "allowNavigation": [
+      "helldivers-br.pages.dev"
+    ]
+  }
+}
