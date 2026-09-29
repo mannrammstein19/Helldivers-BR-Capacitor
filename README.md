@@ -47,3 +47,6 @@ Depois de testar esta V1 no aparelho real:
 - preparar V2 **bundled/offline-first**, copiando a versão real do repositório do site para `www/`;
 - manter APIs de guerra ao vivo;
 - integrar recursos nativos como notificações, compartilhamento e haptics.
+
+## V1.2
+A V1.2 aplica o ícone HELLDIVERS-BR e trata as áreas seguras do Android para evitar sobreposição com status/navigation bars em Android 15/16.

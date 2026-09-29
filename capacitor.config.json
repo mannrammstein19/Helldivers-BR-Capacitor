@@ -8,5 +8,13 @@
     "allowNavigation": [
       "helldivers-br.pages.dev"
     ]
+  },
+  "plugins": {
+    "SystemBars": {
+      "insetsHandling": "disable",
+      "style": "DARK",
+      "hidden": false,
+      "animation": "NONE"
+    }
   }
 }

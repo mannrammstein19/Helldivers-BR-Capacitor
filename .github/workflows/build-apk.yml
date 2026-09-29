@@ -26,15 +26,9 @@ jobs:
           distribution: temurin
           java-version: '21'
 
-      # O runner ubuntu-latest já possui o Android SDK.
-      # Não usamos android-actions/setup-android@v3 porque ele tenta
-      # instalar o pacote legado "tools", que não existe mais.
       - name: Configure Android SDK 36
         shell: bash
         run: |
-          echo "ANDROID_HOME=$ANDROID_HOME"
-          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
-
           SDK_ROOT="${ANDROID_HOME:-${ANDROID_SDK_ROOT}}"
           SDKMANAGER="$SDK_ROOT/cmdline-tools/latest/bin/sdkmanager"
 
@@ -48,13 +42,32 @@ jobs:
           fi
 
           yes | "$SDKMANAGER" --licenses >/dev/null || true
-          "$SDKMANAGER"             "platform-tools"             "platforms;android-36"             "build-tools;36.0.0"
+          "$SDKMANAGER" \
+            "platform-tools" \
+            "platforms;android-36" \
+            "build-tools;36.0.0"
 
       - name: Install dependencies
         run: npm install --no-audit --no-fund
 
       - name: Create Android project
         run: npx cap add android
+
+      - name: Apply HELLDIVERS-BR app icon
+        run: |
+          npx @capacitor/assets generate \
+            --android \
+            --iconBackgroundColor '#000000' \
+            --iconBackgroundColorDark '#000000' \
+            --splashBackgroundColor '#000000' \
+            --splashBackgroundColorDark '#000000'
+
+      - name: Apply Android safe-area fix
+        shell: bash
+        run: |
+          TARGET="android/app/src/main/java/br/com/helldiversbr/capacitor/MainActivity.java"
+          mkdir -p "$(dirname "$TARGET")"
+          cp native/MainActivity.java "$TARGET"
 
       - name: Sync Capacitor
         run: npx cap sync android
@@ -68,7 +81,7 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: HELLDIVERS-BR-Capacitor-V1.1
+          name: HELLDIVERS-BR-Capacitor-V1.2
           path: android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 14
